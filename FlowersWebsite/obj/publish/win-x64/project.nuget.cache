@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "hEzziVk3MagiUEC6USzGwpR8Bb/S9g55QKT7/E+iaK+J7ICbTi1/0Ax1haBamcsuM+J69h7vIUJkVrqLKqjSOA==",
+  "success": true,
+  "projectFilePath": "D:\\Ltts Trainning\\FlowersWebsite\\FlowersWebsite\\FlowersWebsite.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Renu\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\5.0.8\\microsoft.netcore.app.runtime.win-x64.5.0.8.nupkg.sha512",
+    "C:\\Users\\Renu\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\5.0.8\\microsoft.windowsdesktop.app.runtime.win-x64.5.0.8.nupkg.sha512",
+    "C:\\Users\\Renu\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\5.0.8\\microsoft.aspnetcore.app.runtime.win-x64.5.0.8.nupkg.sha512"
+  ],
+  "logs": []
+}
