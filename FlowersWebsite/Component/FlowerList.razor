@@ -1,0 +1,113 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using FlowersWebsite.Models
+@using FlowersWebsite.Services
+@inject JsonFileFlowersService FlowerService
+
+
+<div class="card-columns">
+    @foreach (var flower in FlowerService.GetFlowers())
+    {
+        <div class="card">
+            <div class="card-img" style="background-image:url('@flower.Image'); width :100% ;height :200px"></div>
+            <div class="card-body">
+                <h5 class="card-title">@flower.Title</h5>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="text-muted">
+                <button @onclick="e => SelectFlower(flower.Id)" data-toggle="modal" data-target="#flowerModal" class="btn btn-primary">MoreInfo</button>
+            </div>
+        </div>
+
+    }
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" />
+
+@if (selectFlowers != null)
+{
+    <div id="flowerModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@selectFlowers.Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('@selectFlowers.Image'); width :100% ;height :200px"></div>
+                    <div class="card-body">
+                        <h5 class="card-text">@selectFlowers.Description</h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @if (voteCount == null)
+                    {
+                        <span>Please give the First Vote</span>
+                    }
+                    else
+                    {
+                        <span>@voteCount @voteLable</span>
+                    }
+
+                    @for (int i = 0; i < 3; i++)
+                    {
+                        var currentStar = i;
+                        if (i <= currentStar)
+                        {
+                            <span class="fa-star fa checked" @onclick="e => SubmitRating(currentStar)"></span>
+                        }
+                        else
+                        {
+                            <span class="fa-star fa" @onclick="e => SubmitRating(currentStar)"></span>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    Flowers selectFlowers;
+    string selectFlowerId;
+
+    void SelectFlower(string flowerId)
+    {
+        selectFlowerId = flowerId;
+        selectFlowers = FlowerService.GetFlowers().First(x => x.Id == flowerId);
+        GetCurrentRating();
+    }
+
+    int currenrRating = 0;
+    int voteCount = 0;
+    string voteLable;
+
+    void GetCurrentRating()
+    {
+        if (selectFlowers.Ratings == null)
+        {
+            currenrRating = 0;
+            voteCount = 0;
+        }
+        else
+        {
+            voteCount = selectFlowers.Ratings.Count();
+            voteLable = voteCount > 1 ? "Votes" : "Vote";
+            currenrRating = selectFlowers.Ratings.Sum() / voteCount;
+        }
+        System.Console.WriteLine($"Current rating for {selectFlowers.Id}:{currenrRating}");
+    }
+
+    void SubmitRating(int rating)
+    {
+        System.Console.WriteLine($"Rating Received for {selectFlowers.Id}:{rating}");
+        FlowerService.AddFlowerRating(selectFlowers.Id, rating);
+        SelectFlower(selectFlowerId);
+    }
+
+}
